@@ -20,17 +20,17 @@ beg_num = 1
 end_num = 200
 flags_per_mkr = 4
 
-rows = (flags_per_mkr * 2) + 1
+rows = (flags_per_mkr * 2) + 1 # =9
 
-cols = end_num - beg_num + 1 
+cols = end_num - beg_num + 1 # =200
 
 # marker #1 will be in row 0 and column 1
 # blank marker #0 will be row 0 column 0
 # slash marker will be exception case and hard-coded to row 1 column 0
 
 # calc size of image
-img_width = mkr_width * cols
-img_height = mkr_height * rows
+img_width = mkr_width * cols # img_width =2200
+img_height = mkr_height * rows # img_height =99
 
 def rectangle(input, box, fill, outline, width):
     draw = ImageDraw.Draw(input)
@@ -42,12 +42,10 @@ def rectangle(input, box, fill, outline, width):
 
 img = Image.new('RGBA', (img_width, img_height), (0, 0, 0, 0)) 
 rectangle(img, (0, 0, img_width-1, img_height-1), "white", "black", 1)
-img.save(map_img_dir + '/sprite.png', "PNG")
-
-
+img.save('sprite.png', "PNG")
 
  
 im = Image.new('RGBA', (40, 40), (0, 0, 0, 0)) 
 rectangle(im, (0, 0, 10, 10), "white", "black", 1)
 
-im.save(map_img_dir + '/test.png', "PNG")
+im.save('test.png', "PNG")
