@@ -297,7 +297,7 @@ function initialize() {
 
     var paths = [];
     var pts = pls[0].pts;
-    console.log(pts);
+    //console.log(pts);
     for (var i = 0, length = pts.length; i < length; i++) {
         paths.push(new google.maps.LatLng(pts[i][0], pts[i][1]));
     };
