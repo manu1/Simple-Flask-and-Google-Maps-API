@@ -41,7 +41,7 @@ def sprites_offset(col):
     else:
         return 2
 
-map_img_dir = "C:/Users/Larry/__prjs/_fx/of/Simple-Flask-and-Google-Maps-API/scripts"
+img_map_sprites_dir = "../static/img/map/sprites/"
 
 font = ImageFont.truetype(
     'C:/Windows/Fonts/arial.ttf', 7
@@ -59,7 +59,7 @@ sprites = []
 
 # 1 - 9
 sprite = {}
-sprite['filename'] = 'sprite_1.png'
+sprite['filename'] = img_map_sprites_dir + 'sprite_1.png'
 sprite['mkr_width'] = 12
 sprite['beg_num'] = 1
 sprite['end_num'] = 9
@@ -67,7 +67,7 @@ sprites.append(sprite)
 
 # 10 - 99
 sprite = {}
-sprite['filename'] = 'sprite_2.png'
+sprite['filename'] = img_map_sprites_dir + 'sprite_2.png'
 sprite['mkr_width'] = 16
 sprite['beg_num'] = 10
 sprite['end_num'] = 99
@@ -75,7 +75,7 @@ sprites.append(sprite)
 
 # 100 - 200
 sprite = {}
-sprite['filename'] = 'sprite_3.png'
+sprite['filename'] = img_map_sprites_dir + 'sprite_3.png'
 sprite['mkr_width'] = 20
 sprite['beg_num'] = 100
 sprite['end_num'] = 200
