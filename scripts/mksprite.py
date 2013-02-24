@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 # comments regarding using sprites for markers
 
@@ -9,29 +9,6 @@ from PIL import Image, ImageDraw
 # http://books.google.co.cr/books?id=gHb8m0GSV2MC&pg=PA112&lpg=PA112&dq=google+maps+api+marker+image+sprite&source=bl&ots=8OjTc7FJWD&sig=8yOM1bk9UyqZ0Mhibjz6Me5OFxY&hl=en&sa=X&ei=_3ojUZqhFtCo0AHRtYGADA&ved=0CIIBEOgBMAk#v=onepage&q=google%20maps%20api%20marker%20image%20sprite&f=false
 
 
-
-
-
-map_img_dir = "C:/Users/Larry/__prjs/_fx/of/Simple-Flask-and-Google-Maps-API/scripts"
-
-mkr_width = 11
-mkr_height = 11
-beg_num = 1
-end_num = 200
-flags_per_mkr = 4
-
-rows = (flags_per_mkr * 2) + 1 # =9
-
-cols = end_num - beg_num + 1 # =200
-
-# marker #1 will be in row 0 and column 1
-# blank marker #0 will be row 0 column 0
-# slash marker will be exception case and hard-coded to row 1 column 0
-
-# calc size of image
-img_width = mkr_width * cols # img_width =2200
-img_height = mkr_height * rows # img_height =99
-
 def rectangle(input, box, fill, outline, width):
     draw = ImageDraw.Draw(input)
     draw.rectangle(box, fill=outline) # The outer rectangle
@@ -40,12 +17,167 @@ def rectangle(input, box, fill, outline, width):
         fill=fill
     )
 
-img = Image.new('RGBA', (img_width, img_height), (0, 0, 0, 0)) 
-rectangle(img, (0, 0, img_width-1, img_height-1), "white", "black", 1)
-img.save('sprite.png', "PNG")
+def draw_top_left_corner(draw, tlX, tlY, corner_offset = 3, fill = "black"):
+    draw.line((tlX, tlY + corner_offset, tlX + corner_offset, tlY), fill=fill)        
+    draw.line((tlX, tlY + corner_offset + 1, tlX + corner_offset + 1, tlY), fill=fill) 
+    
+def draw_top_right_corner(draw, trX, trY, corner_offset = 3, fill = "black"):   
+    draw.line((trX - corner_offset, trY, trX, trY + corner_offset), fill=fill)        
+    draw.line((trX - corner_offset + 1, trY, trX, trY + corner_offset + 1), fill=fill)  
+    
+def draw_bottom_right_corner(draw, brX, brY, corner_offset = 3, fill = "black"):   
+    draw.line((brX - corner_offset, brY, brX, brY - corner_offset), fill=fill)        
+    draw.line((brX - corner_offset + 1, brY, brX, brY - corner_offset + 1), fill=fill)        
+    
+def draw_bottom_left_corner(draw, blX, blY, corner_offset = 3, fill = "black"):      
+    draw.line((blX, blY - corner_offset, blX + corner_offset, blY), fill=fill)        
+    draw.line((blX, blY - corner_offset + 1, blX + corner_offset + 1, blY), fill=fill)  
 
- 
-im = Image.new('RGBA', (40, 40), (0, 0, 0, 0)) 
-rectangle(im, (0, 0, 10, 10), "white", "black", 1)
+def sprites_offset(col):
+    if col < 10:
+        return 0
+    elif col < 100:
+        return 1
+    else:
+        return 2
 
-im.save('test.png', "PNG")
+map_img_dir = "C:/Users/Larry/__prjs/_fx/of/Simple-Flask-and-Google-Maps-API/scripts"
+
+font = ImageFont.truetype(
+    'C:/Windows/Fonts/arial.ttf', 7
+)
+
+num_height = 8 # careful with font size param. 8 goes with size=7
+flags_per_mkr = 7
+mkr_height = 12
+num_top_margin = 2
+num_left_margin = 2
+
+
+
+sprites = []
+
+# 1 - 9
+sprite = {}
+sprite['filename'] = 'sprite_1.png'
+sprite['mkr_width'] = 12
+sprite['beg_num'] = 1
+sprite['end_num'] = 9
+sprites.append(sprite)
+
+# 10 - 99
+sprite = {}
+sprite['filename'] = 'sprite_2.png'
+sprite['mkr_width'] = 16
+sprite['beg_num'] = 10
+sprite['end_num'] = 99
+sprites.append(sprite)
+
+# 100 - 200
+sprite = {}
+sprite['filename'] = 'sprite_3.png'
+sprite['mkr_width'] = 20
+sprite['beg_num'] = 100
+sprite['end_num'] = 200
+sprites.append(sprite)
+
+# initialize sprite images
+for i, sprite in enumerate(sprites):
+    
+    mkr_width = sprite['mkr_width']
+    beg_num = sprite['beg_num']
+    end_num = sprite['end_num']
+    
+    rows = flags_per_mkr + 3 
+    cols = end_num - beg_num + 2
+    
+    # calc size of image
+    img_width = mkr_width * cols # img_width =2200
+    img_height = mkr_height * rows # img_height =99
+    
+    img = Image.new('RGB', (img_width, img_height)) 
+    
+    # first row blank numbers, then 
+    rectangle(img, (0, 0, img_width-1, img_height - (mkr_height*2) - 1), "white", "black", 0)
+    
+    # second to last row Foreign Language
+    rectangle(img, (0, img_height - (mkr_height * 2), img_width - 1, img_height - mkr_height - 1), "grey", "white", 0)
+    
+    # last row Do Not Call
+    rectangle(img, (0, img_height - mkr_height, img_width - 1, img_height - 1), "black", "white", 0)
+    
+    sprites[i]['draw'] = ImageDraw.Draw(img) 
+    sprites[i]['img'] = img 
+    
+    
+    #for r in range(0,rows+1):
+        #draw.line((0, r * mkr_height, img_width, r * mkr_height), fill="black")
+    
+    #for c in range(0,cols+1):
+        #draw.line((c * mkr_width, 0, c * mkr_width, img_height), fill="black")
+    
+    
+    # draw numbers
+    for row in range(0,rows+1):
+        fill = "black" if row < rows - 1 else "white"
+        for col in range(beg_num, end_num+1):
+            draw = sprite['draw']
+            text = str(col)
+            text_width, h = draw.textsize(text, font)   
+            num_left_margin = (mkr_width / 2) - (text_width/2)
+            num_top_margin  = (mkr_height / 2) - (num_height/2) + 1
+            draw.text((((col - beg_num) * mkr_width) + num_left_margin, (row * mkr_height) + num_top_margin), text, font=font, fill=fill)
+    
+    # draw corners
+    for row in range(rows+1):
+        for col in range(beg_num,end_num+1):
+            tlX = (col - beg_num) * mkr_width
+            tlY = row * mkr_height
+            trX = tlX + mkr_width
+            trY = tlY
+    
+            blX = (col - beg_num) * mkr_width
+            blY = (row * mkr_height) + mkr_height
+            
+            brX = blX + mkr_width
+            brY = blY
+            
+            draw = sprite['draw']   
+            
+            if row == 1:
+                draw_top_left_corner(draw, tlX, tlY)
+            elif row == 2:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_bottom_left_corner(draw, blX, blY)
+            elif row == 3:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_top_right_corner(draw, trX, trY)
+            elif row == 4:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_top_right_corner(draw, trX, trY)
+                draw_bottom_left_corner(draw, blX, blY)
+            elif row == 5:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_top_right_corner(draw, trX, trY)
+                draw_bottom_right_corner(draw, brX, brY)
+            elif row == 6:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_top_right_corner(draw, trX, trY)
+                draw_bottom_right_corner(draw, brX, brY)
+            elif row == 7:
+                draw_top_left_corner(draw, tlX, tlY)
+                draw_top_right_corner(draw, trX, trY)
+                draw_bottom_right_corner(draw, brX, brY)
+                draw_bottom_left_corner(draw, blX, blY)
+                
+
+# save sprite images
+for i, sprite in enumerate(sprites):
+    sprite['img'].save(sprite['filename'], "PNG")
+    
+    
+    
+#sprites[0]['img'].show()
+sprites[1]['img'].show()
+#sprites[2]['img'].show()
+
