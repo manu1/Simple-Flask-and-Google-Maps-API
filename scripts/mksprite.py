@@ -17,19 +17,19 @@ def rectangle(input, box, fill, outline, width):
         fill=fill
     )
 
-def draw_top_left_corner(draw, tlX, tlY, corner_offset = 3, fill = "black"):
+def draw_top_left_corner(draw, tlX, tlY, corner_offset = 5, fill = "black"):
     draw.line((tlX, tlY + corner_offset, tlX + corner_offset, tlY), fill=fill)        
     draw.line((tlX, tlY + corner_offset + 1, tlX + corner_offset + 1, tlY), fill=fill) 
     
-def draw_top_right_corner(draw, trX, trY, corner_offset = 3, fill = "black"):   
+def draw_top_right_corner(draw, trX, trY, corner_offset = 5, fill = "black"):   
     draw.line((trX - corner_offset, trY, trX, trY + corner_offset), fill=fill)        
     draw.line((trX - corner_offset + 1, trY, trX, trY + corner_offset + 1), fill=fill)  
     
-def draw_bottom_right_corner(draw, brX, brY, corner_offset = 3, fill = "black"):   
+def draw_bottom_right_corner(draw, brX, brY, corner_offset = 5, fill = "black"):   
     draw.line((brX - corner_offset, brY, brX, brY - corner_offset), fill=fill)        
     draw.line((brX - corner_offset + 1, brY, brX, brY - corner_offset + 1), fill=fill)        
     
-def draw_bottom_left_corner(draw, blX, blY, corner_offset = 3, fill = "black"):      
+def draw_bottom_left_corner(draw, blX, blY, corner_offset = 5, fill = "black"):      
     draw.line((blX, blY - corner_offset, blX + corner_offset, blY), fill=fill)        
     draw.line((blX, blY - corner_offset + 1, blX + corner_offset + 1, blY), fill=fill)  
 
@@ -44,14 +44,14 @@ def sprites_offset(col):
 img_map_sprites_dir = "../static/img/map/sprites/"
 
 font = ImageFont.truetype(
-    'C:/Windows/Fonts/arial.ttf', 7
+    'C:/Windows/Fonts/arial.ttf', 9
 )
 
-num_height = 8 # careful with font size param. 8 goes with size=7
+num_height = 10 # careful with font size param. 8 goes with size=7
 flags_per_mkr = 7
-mkr_height = 12
-num_top_margin = 2
-num_left_margin = 2
+mkr_height = 14
+num_top_margin = 1
+num_left_margin = 3
 
 
 
@@ -98,13 +98,13 @@ for i, sprite in enumerate(sprites):
     img = Image.new('RGB', (img_width, img_height)) 
     
     # first row blank numbers, then 
-    rectangle(img, (0, 0, img_width-1, img_height - (mkr_height*2) - 1), "white", "black", 0)
+    rectangle(img, (0, 0, img_width - 1, img_height - (mkr_height * 2) - 1), "white", "black", 0)
     
     # second to last row Foreign Language
-    rectangle(img, (0, img_height - (mkr_height * 2), img_width - 1, img_height - mkr_height - 1), "grey", "white", 0)
+    rectangle(img, (0, img_height - (mkr_height * 2) - 1, img_width - 1, img_height - mkr_height - 1), "grey", "white", 0)
     
     # last row Do Not Call
-    rectangle(img, (0, img_height - mkr_height, img_width - 1, img_height - 1), "black", "white", 0)
+    rectangle(img, (0, img_height - mkr_height - 1, img_width - 1, img_height - 1), "black", "white", 0)
     
     sprites[i]['draw'] = ImageDraw.Draw(img) 
     sprites[i]['img'] = img 
@@ -130,16 +130,23 @@ for i, sprite in enumerate(sprites):
     
     # draw corners
     for row in range(rows+1):
-        for col in range(beg_num,end_num+1):
+        for col in range(beg_num, end_num + 1):
             tlX = (col - beg_num) * mkr_width
             tlY = row * mkr_height
+            
             trX = tlX + mkr_width
+            if trX: trX -= 1
+            
             trY = tlY
     
             blX = (col - beg_num) * mkr_width
+            
             blY = (row * mkr_height) + mkr_height
+            if blY: blY -= 1
             
             brX = blX + mkr_width
+            if brX: brX -= 1
+            
             brY = blY
             
             draw = sprite['draw']   
