@@ -40,7 +40,9 @@ function marker(map, latLng, markerNo, markerState) {
             new google.maps.Point(0, 0)),
       });
     }
-
+function hello(json){
+    alert(json);
+}
 function initialize() {
     var mapOptions = {
         //center: new google.maps.LatLng(9.977661, -84.160547),
@@ -48,6 +50,27 @@ function initialize() {
         zoom: 18,
         mapTypeId: google.maps.MapTypeId.HYBRID
     };
+    // $.getJSON("http://exi.orgtec.com/cnts/", function(json) {
+    //         hello(json);
+    //     }
+    // );
+
+    // $.ajax({url: "http://exi.orgtec.com/prss/",
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     success: function (data, textStatus, xhr) {
+    //         console.log(data);
+    //     },
+    //     error: function (xhr, textStatus, errorThrown) {
+    //         console.log(errorThrown);
+    //         console.log(textStatus);
+    //     }
+    // });
+
+    // $.post('link-to-my-python-script',{data},
+    //     function(answer){
+    //               // process your request here ..
+    //     });
 
     var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
 
