@@ -40,7 +40,9 @@ function marker(map, latLng, markerNo, markerState) {
             new google.maps.Point(0, 0)),
       });
     }
+
 function hello(json){
+
     alert(json);
 }
 function initialize() {
@@ -50,11 +52,11 @@ function initialize() {
         zoom: 18,
         mapTypeId: google.maps.MapTypeId.HYBRID
     };
-    // $.getJSON("http://exi.orgtec.com/cnts/", function(json) {
-    //         hello(json);
-    //     }
-    // );
-
+    $.getJSON("http://exi.orgtec.com/cnts/", function(json) {
+            hello(json);
+        }
+    );
+    console.log(alice.name)
     // $.ajax({url: "http://exi.orgtec.com/prss/",
     //     type: 'GET',
     //     dataType: 'json',
