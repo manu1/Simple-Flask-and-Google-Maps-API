@@ -41,9 +41,8 @@ function marker(map, latLng, markerNo, markerState) {
       });
     }
 
-function hello(json){
-
-    alert(json);
+function hello(item){
+    console.log(item.dNam)
 }
 function initialize() {
     var mapOptions = {
@@ -53,10 +52,10 @@ function initialize() {
         mapTypeId: google.maps.MapTypeId.HYBRID
     };
     $.getJSON("http://exi.orgtec.com/cnts/", function(json) {
-            hello(json);
+            hello(json._items[0]);
         }
     );
-    console.log(alice.name)
+    //console.log(alice.name)
     // $.ajax({url: "http://exi.orgtec.com/prss/",
     //     type: 'GET',
     //     dataType: 'json',
